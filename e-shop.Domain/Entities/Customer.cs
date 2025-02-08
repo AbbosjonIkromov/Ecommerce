@@ -11,6 +11,10 @@ namespace e_shop.Domain.Entities
     [Table("customer")]
     public class Customer
     {
+        public Customer()
+        {
+            CustomerAddresses = new List<CustomerAddress>();
+        }
         [Key]
         [Column("id")]
         public int  Id { get; set; }
@@ -27,8 +31,11 @@ namespace e_shop.Domain.Entities
         [Column("active")]
         public bool Active { get; set; }
         [Column("registered_at")]
-        public DateTime RegisteredAt { get; set; } = DateTime.UtcNow;
+        public DateTime? RegisteredAt { get; set; }
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<CustomerAddress> CustomerAddresses { get; set; }
+
     }
 }

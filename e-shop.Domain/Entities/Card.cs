@@ -11,10 +11,18 @@ namespace e_shop.Domain.Entities
     [Table("card")]
     public class Card
     {
+        public Card()
+        {
+            CardItems = new List<CardItem>();
+        }
         [Key]
         [Column("card_id")]
-        public int Card_id { get; set; }
+        public int CardId { get; set; }
+        [ForeignKey("Customer")]
         [Column("customer_id")]
         public int  CustomerId { get; set; }
+        public Customer Customer { get; set; }
+        public ICollection<CardItem> CardItems { get; set; }
+        
     }
 }

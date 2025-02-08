@@ -12,8 +12,10 @@ namespace e_shop.Domain.Entities;
 public class Product
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("product_id")]
     public int ProductId { get; set; }
+    [Required]
     [Column("product_name")] 
     public string ProductName { get; set; }
     [Column("sku")]

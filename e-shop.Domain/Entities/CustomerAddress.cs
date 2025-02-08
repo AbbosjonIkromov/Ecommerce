@@ -15,11 +15,14 @@ namespace e_shop.Domain.Entities
         [Column("id")]
         public int  Id { get; set; }
         [Column("customer_id")]
+        [ForeignKey(nameof(Customer))]
         public int  CustomerId { get; set; }
+        //[ForeignKey("CustomerId")]
+        public Customer Customers { get; set; }
         [Column("address_line1")]
         public string AddressLine1 { get; set; }
         [Column("address_line2")]
-        public string AddressLine2 { get; set; }
+        public string? AddressLine2 { get; set; }
         [Column("postal_code")]
         public string  PostalCode { get; set; }
         [Column("country")]
@@ -28,5 +31,6 @@ namespace e_shop.Domain.Entities
         public string City { get; set; }
         [Column("phone_number")]
         public string PhoneNumber { get; set; }
+
     }
 }
