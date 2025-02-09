@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using e_shop.DataAccess;
-using e_shop.Domain.Entities;
+using e_shop.Domain.Entities.Customers;
 using Microsoft.EntityFrameworkCore;
 
 namespace e_shop.DateAccess.Services

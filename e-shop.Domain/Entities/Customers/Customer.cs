@@ -6,11 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities
+namespace e_shop.Domain.Entities.Customers
 {
-    [Table("staff_account")]
-    public class StaffAccount
+    [Table("customer")]
+    public class Customer
     {
+        public Customer()
+        {
+            CustomerAddresses = new List<CustomerAddress>();
+        }
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -19,22 +23,19 @@ namespace e_shop.Domain.Entities
         [Column("last_name")]
         public string LastName { get; set; }
         [Column("phone_number")]
-        public string  PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         [Column("email")]
         public string Email { get; set; }
         [Column("password_hash")]
         public string PasswordHash { get; set; }
         [Column("active")]
         public bool Active { get; set; }
-        [Column("profile_image")]
-        public string ProfileImage { get; set; }
         [Column("registered_at")]
-        public DateTime RegisteredAt { get; set; } = DateTime.UtcNow;
-        [Column("updated_at")]
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        [Column("category_id")]
-        public int CreatedBy { get; set; }
-        [Column("updated_by")]
-        public int UpdatedBy { get; set; }
+        public DateTime? RegisteredAt { get; set; }
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<CustomerAddress> CustomerAddresses { get; set; }
+
     }
 }

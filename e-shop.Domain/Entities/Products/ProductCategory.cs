@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities
+namespace e_shop.Domain.Entities.Products
 {
     [Table("product_category")]
     public class ProductCategory

@@ -1,4 +1,7 @@
-﻿using e_shop.Domain.Entities;
+﻿using e_shop.Domain.Entities.Cards;
+using e_shop.Domain.Entities.Categories;
+using e_shop.Domain.Entities.Customers;
+using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

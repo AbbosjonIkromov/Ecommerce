@@ -1,5 +1,5 @@
 ﻿using e_shop.DataAccess;
-using e_shop.Domain.Entities;
+using e_shop.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;

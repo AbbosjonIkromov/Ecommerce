@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities
+namespace e_shop.Domain.Entities.Orders
 {
     [Table("order_status")]
     public class OrderStatus
     {
         [Key]
         [Column("id")]
-        public int  Id { get; set; }
+        public int Id { get; set; }
         [Column("status_name")]
         public string StatusName { get; set; }
         [Column("color")]
@@ -25,8 +25,8 @@ namespace e_shop.Domain.Entities
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         [Column("created_by")]
-        public int  CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
         [Column("updated_by")]
-        public int  UpdatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 }

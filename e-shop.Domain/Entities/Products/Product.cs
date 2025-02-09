@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities;
+namespace e_shop.Domain.Entities.Products;
 
 [Table("product")]
 public class Product
@@ -16,7 +16,7 @@ public class Product
     [Column("product_id")]
     public int ProductId { get; set; }
     [Required]
-    [Column("product_name")] 
+    [Column("product_name")]
     public string ProductName { get; set; }
     [Column("sku")]
     public string SKU { get; set; }
@@ -26,15 +26,15 @@ public class Product
     public decimal DiscountPrice { get; set; }
     [Column("quantity")]
     public int Quantity { get; set; }
-    [Column("product_description")] 
-    public string  ProductDescription { get; set; }
+    [Column("product_description")]
+    public string ProductDescription { get; set; }
     [Column("product_weight")]
-    public decimal ProductWeight  { get; set; }
+    public decimal ProductWeight { get; set; }
     [Column("product_note")]
     public string ProductNote { get; set; }
     [Column("published")]
     public bool Published { get; set; }
-    [Column("created_at")]  
+    [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

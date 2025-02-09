@@ -6,13 +6,13 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities
+namespace e_shop.Domain.Entities.Products
 {
     [Table("product_shipping")]
     public class ProductShipping
     {
         [Column("product_id")]
-        public int  ProductId { get; set; }
+        public int ProductId { get; set; }
         [Column("shipping_id")]
         public int ShippingId { get; set; }
         [Column("ship_change")]

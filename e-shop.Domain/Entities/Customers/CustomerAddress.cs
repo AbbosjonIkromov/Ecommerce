@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities
+namespace e_shop.Domain.Entities.Customers
 {
     [Table("customer_address")]
     public class CustomerAddress
     {
         [Key]
         [Column("id")]
-        public int  Id { get; set; }
+        public int Id { get; set; }
         [Column("customer_id")]
         [ForeignKey(nameof(Customer))]
-        public int  CustomerId { get; set; }
+        public int CustomerId { get; set; }
         //[ForeignKey("CustomerId")]
         public Customer Customers { get; set; }
         [Column("address_line1")]
@@ -24,7 +24,7 @@ namespace e_shop.Domain.Entities
         [Column("address_line2")]
         public string? AddressLine2 { get; set; }
         [Column("postal_code")]
-        public string  PostalCode { get; set; }
+        public string PostalCode { get; set; }
         [Column("country")]
         public string Country { get; set; }
         [Column("city")]

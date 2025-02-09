@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities
+namespace e_shop.Domain.Entities.Products
 {
-    [Table("product_coupon")]
-    public class ProductCoupon
+    [Table("product_tag")]
+    public class ProductTag
     {
+        [Column("tag_id")]
+        public int TagId { get; set; }
         [Column("product_id")]
-        public int  ProductId { get; set; }
-        [Column("coupon_id")]
-        public int  CouponId { get; set; }
+        public int ProductId { get; set; }
     }
 }

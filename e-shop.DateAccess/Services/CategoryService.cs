@@ -1,5 +1,5 @@
 ﻿using e_shop.DataAccess;
-using e_shop.Domain.Entities;
+using e_shop.Domain.Entities.Categories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

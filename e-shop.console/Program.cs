@@ -1,9 +1,9 @@
 ﻿using e_shop.DataAccess;
 using e_shop.DateAccess.Services;
-using e_shop.Domain.Entities;
+using e_shop.Domain.Entities.Cards;
 
 namespace e_shop.console;
-    class Program
+class Program
 {
     static
         async Task Main(string[] args)
