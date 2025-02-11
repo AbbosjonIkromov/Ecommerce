@@ -10,9 +10,9 @@ namespace e_shop.Domain.Entities.Products
     [Table("product_tag")]
     public class ProductTag
     {
-        [Column("tag_id")]
         public int TagId { get; set; }
-        [Column("product_id")]
+        public Tag Tag { get; set; }
         public int ProductId { get; set; }
+        public Product Product { get; set; }
     }
 }

@@ -5,14 +5,14 @@ using e_shop.Domain.Entities.Cards;
 namespace e_shop.console;
 class Program
 {
-    static
-        async Task Main(string[] args)
+    static async Task Main(string[] args)
     {
         using var dbContext = new ShopContext();
         var productService = new ProductService(dbContext);
         var categoryService = new CategoryService(dbContext);
         var customerService = new CustomerService(dbContext);
         var cardService = new CardService(dbContext);
+        
         //var product1 = new Product
         //{
         //    ProductId = 1,
@@ -73,21 +73,21 @@ class Program
         //await customerService.AddCustomerAddress(customerAddress);
         //customerService.SaveChanges();
 
-        var card = new Card()
-        {
-            CardId = 2,
-            CustomerId = 5,
-            CardItems = new List<CardItem>()
-            {
-                new CardItem()
-                {
-                    Id = 2,
-                    ProductId = 1,
-                    CardId = 2,
-                    Quantity = 5
-                }
-            }
-        };
+        //var card = new Card()
+        //{
+        //    CardId = 2,
+        //    CustomerId = 5,
+        //    CardItems = new List<CardItem>()
+        //    {
+        //        new CardItem()
+        //        {
+        //            Id = 2,
+        //            ProductId = 1,
+        //            CardId = 2,
+        //            Quantity = 5
+        //        }
+        //    }
+        //};
 
         //var cardItem = new CardItem()
         //{
@@ -104,11 +104,14 @@ class Program
         //cardService.AddCard(card);
         //cardService.SaveChanges();
 
-        var allCards = cardService.GetCards();
-        foreach (var c in allCards)
-        {
-            Console.WriteLine(c.CardId);
-        }
+        //var allCards = cardService.GetCards();
+        //foreach (var c in allCards)
+        //{
+        //    Console.WriteLine(c.CardId);
+        //}
+
+         
+
         Console.ReadLine();
 
     }
