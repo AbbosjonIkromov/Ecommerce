@@ -27,8 +27,8 @@ public class Product
     public decimal ProductWeight { get; set; }
     public string ProductNote { get; set; }
     public bool Published { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
     public int CreatedBy { get; set; }
     public int UpdatedBy { get; set; }
 

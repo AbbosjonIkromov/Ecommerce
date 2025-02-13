@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using e_shop.DataAccess;
 using e_shop.Domain.Entities;
+using e_shop.Domain.Entities.Categories;
 using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +35,8 @@ namespace e_shop.DateAccess.Services
             return  _shopContext.Products
                 .Include(r => r.ProductTags)
                 .ThenInclude(r => r.Tag);
+
         }
     }
+    
 }

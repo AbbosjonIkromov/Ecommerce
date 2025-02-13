@@ -110,7 +110,24 @@ class Program
         //    Console.WriteLine(c.CardId);
         //}
 
-         
+        /*
+        var deletedCategory = dbContext.Categories.Find(1);
+        if (deletedCategory is not null)
+        {
+            dbContext.Categories.Remove(deletedCategory);
+            dbContext.SaveChanges();
+        }
+
+        var deletedProduct = dbContext.Products.Find(1);
+        if (deletedProduct is not null)
+        {
+            dbContext.Products.Remove(deletedProduct);
+            dbContext.SaveChanges();
+            Console.WriteLine("Product deleted!");
+        }
+        */
+
+        //DataSeeder.SeedData(dbContext); // DataSeeder class orqali malumot qushish
 
         Console.ReadLine();
 

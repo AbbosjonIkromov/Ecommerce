@@ -1,10 +1,12 @@
-﻿using e_shop.Domain.Entities;
+﻿using e_shop.DateAccess.Services;
+using e_shop.Domain.Entities;
 using e_shop.Domain.Entities.Cards;
 using e_shop.Domain.Entities.Categories;
 using e_shop.Domain.Entities.Customers;
 using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ProductTag = e_shop.Domain.Entities.Products.ProductTag;
 
 namespace e_shop.DataAccess
 {
@@ -50,10 +52,22 @@ namespace e_shop.DataAccess
                 .HasDefaultValue(0)
                 .IsRequired();
 
+            modelBuilder.Entity<Product>(builder =>
+            {
+                builder.Property(r => r.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                builder.Property(r => r.UpdatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
+
 
             modelBuilder.Entity<Category>(builder =>
             {
-                
+                builder.Property(r => r.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                builder.Property(r => r.UpdatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 builder.Property(r => r.CategoryName)
                     .HasMaxLength(255)
@@ -87,6 +101,7 @@ namespace e_shop.DataAccess
                 .HasForeignKey(r => r.CardId);
             #endregion
 
+
             modelBuilder.Entity<Tag>(builder =>
             {
                 builder.HasKey(r => r.TagId);
@@ -99,6 +114,11 @@ namespace e_shop.DataAccess
                 builder.Property(r => r.Icon)
                     .HasMaxLength(255)
                     .HasColumnType("varchar");
+
+                builder.Property(r => r.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                
 
             });
 
@@ -115,6 +135,65 @@ namespace e_shop.DataAccess
 
             });
 
+
+
+            modelBuilder.Entity<Category>()
+                .HasData(
+                    new Category
+                    {
+                        CategoryId = 1,
+                        ParentId = 1,
+                        CategoryName = "Books",
+                        CategoryDescription = "This is crazy",
+                        Icon = "_bb",
+                        ImagePath = "image",
+                        Active = true,
+                    }
+                );
+
+            modelBuilder.Entity<Product>()
+                .HasData(
+                    new Product
+                    {
+                        ProductId = 1,
+                        ProductName = "Yashamoq",
+                        SKU = "bb",
+                        RegularPrice = 45_000,
+                        DiscountPrice = 37_000,
+                        Quantity = 13,
+                        ProductDescription = "Awesome",
+                        ProductNote = "Library",
+                        Published = true
+                    }
+                );
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasData(
+                    new ProductCategory
+                    {
+                        CategoryId = 1,
+                        ProductId = 1
+                    }
+                );
+
+            
+            modelBuilder.Seed();  // ModelBuilderExtensions class orqali malumoq qushish
+
+            
+
+        }
+
+        public override int SaveChanges()
+        {
+            foreach (var entry in ChangeTracker.Entries<Category>())
+            {
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                }
+            }
+
+            return base.SaveChanges();  
         }
     }
 }

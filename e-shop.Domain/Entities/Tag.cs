@@ -22,8 +22,8 @@ namespace e_shop.Domain.Entities
         public int TagId { get; set; }
         public string TagName { get; set; }
         public string Icon { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public int  CreatedBy { get; set; }
         public int UpdatedBy { get; set; }
         public ICollection<ProductTag> ProductTags { get; set; }
