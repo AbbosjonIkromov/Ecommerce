@@ -25,6 +25,8 @@ public class Category
     public int CreatedBy { get; set; }
     public int UpdatedBy { get; set; }
 
-    public ICollection<ProductCategory> ProductCategories { get; set; }
+   // public virtual ICollection<ProductCategory> ProductCategories { get; set; }
+
+   public virtual ICollection<Product> Products { get; set; }
 
 }

@@ -26,7 +26,7 @@ namespace e_shop.Domain.Entities
         public DateTime UpdatedAt { get; set; }
         public int  CreatedBy { get; set; }
         public int UpdatedBy { get; set; }
-        public ICollection<ProductTag> ProductTags { get; set; }
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
 
     }
 }

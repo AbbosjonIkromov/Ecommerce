@@ -43,15 +43,6 @@ namespace e_shop.DateAccess.Services
                         Published = true
                     }    
                 );
-
-            modelBuilder.Entity<ProductCategory>()
-                .HasData(
-                    new ProductCategory
-                    {
-                        CategoryId = 2,
-                        ProductId = 2,
-                    }
-                );
         }
     }
 }

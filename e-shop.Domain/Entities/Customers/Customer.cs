@@ -35,7 +35,7 @@ namespace e_shop.Domain.Entities.Customers
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<CustomerAddress> CustomerAddresses { get; set; }
+        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
 
     }
 }

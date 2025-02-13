@@ -1,6 +1,10 @@
-﻿using e_shop.DataAccess;
+﻿using Bogus;
+using e_shop.DataAccess;
 using e_shop.DateAccess.Services;
 using e_shop.Domain.Entities.Cards;
+using e_shop.Domain.Entities.Categories;
+using e_shop.Domain.Entities.Products;
+using Microsoft.EntityFrameworkCore;
 
 namespace e_shop.console;
 class Program
@@ -128,6 +132,23 @@ class Program
         */
 
         //DataSeeder.SeedData(dbContext); // DataSeeder class orqali malumot qushish
+
+
+
+        var categories = dbContext.Categories
+            .Include(r => r.Products)
+            .ToList();
+
+        foreach (var category in categories)
+        {
+            Console.WriteLine($"CategoryId: {category.CategoryId}, CategoryName: {category.CategoryName}");
+            foreach (var product in category.Products)
+            {
+                Console.WriteLine($"productId: {product.ProductId}, productName: {product.ProductName}");
+            }
+        }
+
+        Console.WriteLine("DONE!");
 
         Console.ReadLine();
 

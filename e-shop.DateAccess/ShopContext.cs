@@ -1,4 +1,6 @@
-﻿using e_shop.DateAccess.Services;
+﻿using System.Reflection;
+using e_shop.DateAccess.ModelConfigurition;
+using e_shop.DateAccess.Services;
 using e_shop.Domain.Entities;
 using e_shop.Domain.Entities.Cards;
 using e_shop.Domain.Entities.Categories;
@@ -29,6 +31,7 @@ namespace e_shop.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString)
+                .UseLazyLoadingProxies()
                 .LogTo(Console.WriteLine, LogLevel.Information)
                 .UseSnakeCaseNamingConvention();
         }
@@ -36,64 +39,19 @@ namespace e_shop.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Lesson
-            modelBuilder.Entity<Product>()
-                .Property(r => r.SKU)
-                .HasMaxLength(255)
-                .HasColumnType("varchar")
-                .IsRequired();
 
-            modelBuilder.Entity<Product>()
-                .Property(r => r.ProductName)
-                .HasMaxLength(255)
-                .IsRequired();
-
-            modelBuilder.Entity<Product>()
-                .Property(r => r.RegularPrice)
-                .HasDefaultValue(0)
-                .IsRequired();
-
-            modelBuilder.Entity<Product>(builder =>
-            {
-                builder.Property(r => r.CreatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-                builder.Property(r => r.UpdatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-            });
+            //modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            //modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            //modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
+            //modelBuilder.ApplyConfiguration(new CardConfiguration());
+            //modelBuilder.ApplyConfiguration(new TagConfiguration());
 
 
-            modelBuilder.Entity<Category>(builder =>
-            {
-                builder.Property(r => r.CreatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+           // modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
 
-                builder.Property(r => r.UpdatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                builder.Property(r => r.CategoryName)
-                    .HasMaxLength(255)
-                    .IsRequired();
-
-                builder.Property(r => r.Active)
-                    .HasDefaultValue(true);
-
-            });
-
-            modelBuilder.Entity<ProductCategory>(builder =>
-            {
-                builder.HasKey(r => new { r.CategoryId, r.ProductId });
-
-                builder.HasOne(r => r.Category)
-                    .WithMany(r => r.ProductCategories);
-
-                builder.HasOne(r => r.Product)
-                    .WithMany(r => r.ProductCategories);
-            });
-
-            modelBuilder.Entity<Card>(builder =>
-            {
-                builder.HasMany(r => r.CardItems)
-                    .WithOne(r => r.Card);
-            });
+           // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Hamma IEntityConfiguration dan voris olgan larni ishlatadi
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly); // bu ham wunaqa iwlaydi
+            
 
             modelBuilder.Entity<CardItem>()
                 .HasOne(r => r.Card)
@@ -101,26 +59,6 @@ namespace e_shop.DataAccess
                 .HasForeignKey(r => r.CardId);
             #endregion
 
-
-            modelBuilder.Entity<Tag>(builder =>
-            {
-                builder.HasKey(r => r.TagId);
-
-                builder.Property(r => r.TagName)
-                    .HasMaxLength(255)
-                    .HasColumnType("varchar")
-                    .IsRequired();
-
-                builder.Property(r => r.Icon)
-                    .HasMaxLength(255)
-                    .HasColumnType("varchar");
-
-                builder.Property(r => r.CreatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                
-
-            });
 
             modelBuilder.Entity<ProductTag>(builder => 
             {
@@ -134,8 +72,6 @@ namespace e_shop.DataAccess
 
 
             });
-
-
 
             modelBuilder.Entity<Category>()
                 .HasData(
@@ -167,14 +103,14 @@ namespace e_shop.DataAccess
                     }
                 );
 
-            modelBuilder.Entity<ProductCategory>()
-                .HasData(
-                    new ProductCategory
-                    {
-                        CategoryId = 1,
-                        ProductId = 1
-                    }
-                );
+            //modelBuilder.Entity<ProductCategory>()
+            //    .HasData(
+            //        new ProductCategory
+            //        {
+            //            CategoryId = 1,
+            //            ProductId = 1
+            //        }
+            //    );
 
             
             modelBuilder.Seed();  // ModelBuilderExtensions class orqali malumoq qushish

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using e_shop.Domain.Entities.Categories;
 
 namespace e_shop.Domain.Entities.Products;
 
@@ -13,7 +14,7 @@ public class Product
 {
     public Product()
     {
-        ProductCategories = new List<ProductCategory>();
+       // ProductCategories = new List<ProductCategory>();
         ProductTags = new List<ProductTag>();
     }
 
@@ -32,7 +33,8 @@ public class Product
     public int CreatedBy { get; set; }
     public int UpdatedBy { get; set; }
 
-    public ICollection<ProductCategory> ProductCategories { get; set; }
-    public ICollection<ProductTag> ProductTags { get; set; }
+   // public virtual ICollection<ProductCategory> ProductCategories { get; set; }
+   public virtual ICollection<Category> Categories { get; set; }
+    public virtual ICollection<ProductTag> ProductTags { get; set; }
 
 }

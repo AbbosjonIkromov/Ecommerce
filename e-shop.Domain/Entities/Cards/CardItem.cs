@@ -18,12 +18,12 @@ namespace e_shop.Domain.Entities.Cards
         [ForeignKey("Product")]
         [Column("product_id")]
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
         [Column("card_id")]
         [ForeignKey("Card")]
         public int CardId { get; set; }
 
-        public Card Card { get; set; }
+        public virtual Card Card { get; set; }
         [Column("quantity")]
         public int Quantity { get; set; }
     }

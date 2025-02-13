@@ -22,8 +22,8 @@ namespace e_shop.Domain.Entities.Cards
         [ForeignKey("Customer")]
         [Column("customer_id")]
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
-        public ICollection<CardItem> CardItems { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual ICollection<CardItem> CardItems { get; set; }
 
     }
 }
