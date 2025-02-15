@@ -15,11 +15,6 @@ namespace e_shop.DateAccess.ModelConfigurition
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             
-                builder.Property(r => r.CreatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                builder.Property(r => r.UpdatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 builder.Property(r => r.CategoryName)
                     .HasMaxLength(255)

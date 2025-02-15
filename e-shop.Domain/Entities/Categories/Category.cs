@@ -10,9 +10,12 @@ using e_shop.Domain.Entities.Products;
 namespace e_shop.Domain.Entities.Categories;
 
 [Table("category")]
-public class Category
+public class Category : IAuditable
 {
-
+    public Category()
+    {
+        Products = new List<Product>();
+    }
     public int CategoryId { get; set; }
     public int ParentId { get; set; }
     public string CategoryName { get; set; }
@@ -20,13 +23,13 @@ public class Category
     public string Icon { get; set; }
     public string ImagePath { get; set; }
     public bool Active { get; set; }
-    public DateTime CreatedAt { get; set; } 
-    public DateTime? UpdatedAt { get; set; } 
+    public DateTime CreateAt { get; set; }
+    public DateTime? UpdateTime { get; set; }
     public int CreatedBy { get; set; }
     public int UpdatedBy { get; set; }
 
    // public virtual ICollection<ProductCategory> ProductCategories { get; set; }
 
-   public virtual ICollection<Product> Products { get; set; }
+   public virtual ICollection<Product> Products { get; set; } 
 
 }

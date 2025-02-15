@@ -29,11 +29,6 @@ namespace e_shop.DateAccess.ModelConfigurition
                 .HasDefaultValue(0)
                 .IsRequired();
 
-            builder.Property(r => r.CreatedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-            builder.Property(r => r.UpdatedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.HasMany(r => r.Categories)
                 .WithMany(r => r.Products);

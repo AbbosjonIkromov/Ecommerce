@@ -16,7 +16,7 @@ class Program
         var categoryService = new CategoryService(dbContext);
         var customerService = new CustomerService(dbContext);
         var cardService = new CardService(dbContext);
-        
+
         //var product1 = new Product
         //{
         //    ProductId = 1,
@@ -135,18 +135,72 @@ class Program
 
 
 
-        var categories = dbContext.Categories
-            .Include(r => r.Products)
-            .ToList();
+        ////var categories = dbContext.Categories
+        ////    .Include(r => r.Products)
+        ////    .ToList();
 
-        foreach (var category in categories)
+        //foreach (var category in categories)
+        //{
+        //    Console.WriteLine($"CategoryId: {category.CategoryId}, CategoryName: {category.CategoryName}");
+        //    foreach (var product in category.Products)
+        //    {
+        //        Console.WriteLine($"productId: {product.ProductId}, productName: {product.ProductName}");
+        //    }
+        //}
+
+
+        //var categories = dbContext.Categories.ToList();
+
+        //if (!categories.Any())
+        //{
+        //    Console.WriteLine("NOT FOUND");
+        //}
+
+        foreach (var category in dbContext.Categories.ToList())
         {
-            Console.WriteLine($"CategoryId: {category.CategoryId}, CategoryName: {category.CategoryName}");
-            foreach (var product in category.Products)
+            var product = new Product()
             {
-                Console.WriteLine($"productId: {product.ProductId}, productName: {product.ProductName}");
-            }
+                ProductName = "Chocolate",
+                ProductDescription = "Fruits",
+                SKU = "Sk1",
+                RegularPrice = 100,
+                DiscountPrice = 90,
+                Quantity = 10,
+                ProductWeight = 1,
+                ProductNote = "Fresh",
+                Published = true,
+                CreatedBy = 1,
+                UpdatedBy = 1
+            };
+            product.Categories.Add(category);
+            dbContext.Products.Add(product);
         }
+
+        dbContext.SaveChanges();
+
+        //var categoryProduct = await dbContext.Categories
+        //    .Include(r => r.Products)
+        //    .ToListAsync();
+
+        //foreach (var category in categoryProduct)
+        //{
+        //    Console.WriteLine($"CategoryId {category.CategoryId}, CategoryName:{category.CategoryName}");
+        //    foreach (var product in category.Products)
+        //    {
+        //        Console.WriteLine($"ProductId: {product.ProductId}, ProductName: {product.ProductName}");
+        //    }
+        //}
+
+        //var deletedCategory = dbContext.Products.Where(r => r.ProductId < 15).ToList();
+        //dbContext.Products.RemoveRange(deletedCategory);
+
+        //dbContext.SaveChanges();
+
+
+
+
+
+
 
         Console.WriteLine("DONE!");
 

@@ -33,7 +33,8 @@ namespace e_shop.DataAccess
             optionsBuilder.UseNpgsql(_connectionString)
                 .UseLazyLoadingProxies()
                 .LogTo(Console.WriteLine, LogLevel.Information)
-                .UseSnakeCaseNamingConvention();
+                .UseSnakeCaseNamingConvention()
+                .AddInterceptors(new AuditInterceptor());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -121,15 +122,41 @@ namespace e_shop.DataAccess
 
         public override int SaveChanges()
         {
-            foreach (var entry in ChangeTracker.Entries<Category>())
+            //foreach (var entry in ChangeTracker.Entries<Category>())
+            //{
+            //    if (entry.State == EntityState.Modified)
+            //    {
+            //        entry.Entity.UpdatedAt = DateTime.UtcNow;
+            //    }
+            //}
+
+            //return base.SaveChanges();  
+
+            var entries = ChangeTracker.Entries();
+
+            var addedEntries = entries.Where(r => r.State == EntityState.Added);
+
+            var updateEntries = entries.Where(r => r.State == EntityState.Modified);
+
+            foreach (var entry in addedEntries)
             {
-                if (entry.State == EntityState.Modified)
+                if (entry.Entity is IAuditable entity)
                 {
-                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                    entity.CreateAt = DateTime.UtcNow;
+                    entity.CreatedBy = 1;
                 }
             }
 
-            return base.SaveChanges();  
+            foreach (var entry in updateEntries)
+            {
+                if (entry.Entity is IAuditable entity)
+                {
+                    entity.UpdateTime = DateTime.UtcNow;
+                    entity.UpdatedBy = 1;
+                }
+            }
+
+            return base.SaveChanges();
         }
     }
 }

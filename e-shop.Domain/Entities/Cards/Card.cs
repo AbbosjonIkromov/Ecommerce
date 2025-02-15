@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 namespace e_shop.Domain.Entities.Cards
 {
     [Table("card")]
-    public class Card
+    public class Card : IAuditable
     {
         public Card()
         {
             CardItems = new List<CardItem>();
         }
-        [Key]
-        [Column("card_id")]
         public int CardId { get; set; }
-        [ForeignKey("Customer")]
-        [Column("customer_id")]
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual ICollection<CardItem> CardItems { get; set; }
 
+        public DateTime CreateAt { get; set; }
+        public DateTime? UpdateTime { get; set; }
+        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 }

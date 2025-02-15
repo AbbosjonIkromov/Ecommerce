@@ -10,21 +10,18 @@ using System.Threading.Tasks;
 namespace e_shop.Domain.Entities.Cards
 {
     [Table("card_item")]
-    public class CardItem
+    public class CardItem : IAuditable
     {
-        [Key]
-        [Column("id")]
         public int Id { get; set; }
-        [ForeignKey("Product")]
-        [Column("product_id")]
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
-        [Column("card_id")]
-        [ForeignKey("Card")]
         public int CardId { get; set; }
 
         public virtual Card Card { get; set; }
-        [Column("quantity")]
         public int Quantity { get; set; }
+        public DateTime CreateAt { get; set; }
+        public DateTime? UpdateTime { get; set; }
+        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 }

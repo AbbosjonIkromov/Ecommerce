@@ -9,33 +9,26 @@ using System.Threading.Tasks;
 namespace e_shop.Domain.Entities.Customers
 {
     [Table("customer")]
-    public class Customer
+    public class Customer : IAuditable
     {
         public Customer()
         {
             CustomerAddresses = new List<CustomerAddress>();
         }
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
-        [Column("first_name")]
-        public string FirstName { get; set; }
-        [Column("last_name")]
-        public string LastName { get; set; }
-        [Column("phone_number")]
-        public string PhoneNumber { get; set; }
-        [Column("email")]
-        public string Email { get; set; }
-        [Column("password_hash")]
-        public string PasswordHash { get; set; }
-        [Column("active")]
-        public bool Active { get; set; }
-        [Column("registered_at")]
-        public DateTime? RegisteredAt { get; set; }
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public bool Active { get; set; }
+        public DateTime? RegisteredAt { get; set; }
         public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
 
+        public DateTime CreateAt { get; set; }
+        public DateTime? UpdateTime { get; set; }
+        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 }

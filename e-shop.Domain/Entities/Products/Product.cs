@@ -10,11 +10,12 @@ using e_shop.Domain.Entities.Categories;
 namespace e_shop.Domain.Entities.Products;
 
 [Table("product")]
-public class Product
+public class Product : IAuditable
 {
     public Product()
     {
        // ProductCategories = new List<ProductCategory>();
+       Categories = new List<Category>();
         ProductTags = new List<ProductTag>();
     }
 
@@ -28,8 +29,8 @@ public class Product
     public decimal ProductWeight { get; set; }
     public string ProductNote { get; set; }
     public bool Published { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreateAt { get; set; }
+    public DateTime? UpdateTime { get; set; }
     public int CreatedBy { get; set; }
     public int UpdatedBy { get; set; }
 
