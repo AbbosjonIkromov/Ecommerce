@@ -8,25 +8,17 @@ using System.Threading.Tasks;
 
 namespace e_shop.Domain.Entities.Orders
 {
-    [Table("order_status")]
-    public class OrderStatus
+    public class OrderStatus : IAuditable
     {
-        [Key]
-        [Column("id")]
         public int Id { get; set; }
-        [Column("status_name")]
         public string StatusName { get; set; }
-        [Column("color")]
         public string Color { get; set; }
-        [Column("privacy")]
         public string Privacy { get; set; }
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        [Column("updated_at")]
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        [Column("created_by")]
+        public int OrderId { get; set; }
+        public virtual Order Order { get; set; }
+        public DateTime CreateAt { get; set; }
+        public DateTime? UpdateTime { get; set; }
         public int CreatedBy { get; set; }
-        [Column("updated_by")]
         public int UpdatedBy { get; set; }
     }
 }

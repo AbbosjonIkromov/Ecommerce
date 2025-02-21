@@ -5,29 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using e_shop.Domain.Entities.Customers;
 
 namespace e_shop.Domain.Entities.Orders
 {
-    [Table("Order")]
-    public class Order
+    public class Order : IAuditable
     {
-        [Key]
-        [Column("id")]
         public int Id { get; set; }
-        [Column("coupon_id")]
         public int CouponId { get; set; }
-        [Column("customer_id")]
+        public virtual Coupon Coupon { get; set; }
         public int CustomerId { get; set; }
-        [Column("order_status_id")]
+        public virtual Customer Customer { get; set; }
         public int OrderStatusId { get; set; }
-        [Column("order_approved_at")]
-        public DateTime OrderApprovedAt { get; set; } = DateTime.UtcNow;
-        [Column("order_delivered_carrier_id")]
-        public DateTime OrderDeliveredCarrierId { get; set; } = DateTime.UtcNow;
-        [Column("order_delivered_customer_date")]
-        public DateTime OrderDeliveredCustomerDate { get; set; } = DateTime.UtcNow;
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
+        public virtual OrderStatus  OrderStatus { get; set; }
+        public int OrderItemId { get; set; }
+        public virtual OrderItem OrderItem { get; set; }
+        public DateTime OrderApprovedAt { get; set; } 
+        public DateTime OrderDeliveredCustomerDate { get; set; }
+        public DateTime CreateAt { get; set; }
+        public DateTime? UpdateTime { get; set; }
+        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 }

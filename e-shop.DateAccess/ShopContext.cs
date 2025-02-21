@@ -5,8 +5,10 @@ using e_shop.Domain.Entities;
 using e_shop.Domain.Entities.Cards;
 using e_shop.Domain.Entities.Categories;
 using e_shop.Domain.Entities.Customers;
+using e_shop.Domain.Entities.Orders;
 using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using ProductTag = e_shop.Domain.Entities.Products.ProductTag;
 
@@ -23,24 +25,24 @@ namespace e_shop.DataAccess
         public DbSet<CardItem> CardItems { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
-        //public ShopContext()
-        //{
-        //    Database.EnsureCreated();
-        //}
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString)
                 .UseLazyLoadingProxies()
-                .LogTo(Console.WriteLine, LogLevel.Information)
+                .LogTo(Console.WriteLine, new[] {RelationalEventId.CommandExecuted})
                 .UseSnakeCaseNamingConvention()
                 .AddInterceptors(new AuditInterceptor());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region Lesson
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly); // bu ham wunaqa iwlaydi
 
+            #region Lesson
             //modelBuilder.ApplyConfiguration(new ProductConfiguration());
             //modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             //modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
@@ -51,14 +53,12 @@ namespace e_shop.DataAccess
            // modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
 
            // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Hamma IEntityConfiguration dan voris olgan larni ishlatadi
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly); // bu ham wunaqa iwlaydi
             
 
             modelBuilder.Entity<CardItem>()
                 .HasOne(r => r.Card)
                 .WithMany(r => r.CardItems)
                 .HasForeignKey(r => r.CardId);
-            #endregion
 
 
             modelBuilder.Entity<ProductTag>(builder => 
@@ -117,20 +117,12 @@ namespace e_shop.DataAccess
             modelBuilder.Seed();  // ModelBuilderExtensions class orqali malumoq qushish
 
             
+            #endregion
 
         }
 
         public override int SaveChanges()
         {
-            //foreach (var entry in ChangeTracker.Entries<Category>())
-            //{
-            //    if (entry.State == EntityState.Modified)
-            //    {
-            //        entry.Entity.UpdatedAt = DateTime.UtcNow;
-            //    }
-            //}
-
-            //return base.SaveChanges();  
 
             var entries = ChangeTracker.Entries();
 

@@ -3,6 +3,7 @@ using e_shop.DataAccess;
 using e_shop.DateAccess.Services;
 using e_shop.Domain.Entities.Cards;
 using e_shop.Domain.Entities.Categories;
+using e_shop.Domain.Entities.Orders;
 using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,9 @@ class Program
         var categoryService = new CategoryService(dbContext);
         var customerService = new CustomerService(dbContext);
         var cardService = new CardService(dbContext);
+        var orderService = new OrderService(dbContext);
 
+        #region Practice
         //var product1 = new Product
         //{
         //    ProductId = 1,
@@ -156,27 +159,27 @@ class Program
         //    Console.WriteLine("NOT FOUND");
         //}
 
-        foreach (var category in dbContext.Categories.ToList())
-        {
-            var product = new Product()
-            {
-                ProductName = "Chocolate",
-                ProductDescription = "Fruits",
-                SKU = "Sk1",
-                RegularPrice = 100,
-                DiscountPrice = 90,
-                Quantity = 10,
-                ProductWeight = 1,
-                ProductNote = "Fresh",
-                Published = true,
-                CreatedBy = 1,
-                UpdatedBy = 1
-            };
-            product.Categories.Add(category);
-            dbContext.Products.Add(product);
-        }
+        //foreach (var category in dbContext.Categories.ToList())
+        //{
+        //    var product = new Product()
+        //    {
+        //        ProductName = "Chocolate",
+        //        ProductDescription = "Fruits",
+        //        SKU = "Sk1",
+        //        RegularPrice = 100,
+        //        DiscountPrice = 90,
+        //        Quantity = 10,
+        //        ProductWeight = 1,
+        //        ProductNote = "Fresh",
+        //        Published = true,
+        //        CreatedBy = 1,
+        //        UpdatedBy = 1
+        //    };
+        //    product.Categories.Add(category);
+        //    dbContext.Products.Add(product);
+        //}
 
-        dbContext.SaveChanges();
+        //dbContext.SaveChanges();
 
         //var categoryProduct = await dbContext.Categories
         //    .Include(r => r.Products)
@@ -195,12 +198,50 @@ class Program
         //dbContext.Products.RemoveRange(deletedCategory);
 
         //dbContext.SaveChanges();
+        #endregion
 
+        var product = new Product()
+        {
+            ProductId = 40,
+            ProductName = "Name",
+            ProductNote = "Note",
+            ProductWeight = 1,
+            ProductDescription = "This is crazy",
+            Published = false,
+            RegularPrice = 45.00m,
+            DiscountPrice = 15.00m,
+            SKU = " "
+        };
+        //Console.WriteLine(dbContext.Products.Entry(product).State);
 
+        //dbContext.Attach(product);
+        //Console.WriteLine(dbContext.Products.Entry(product).State);
+        //product.ProductName = "Name1";
+        //Console.WriteLine(dbContext.Products.Entry(product).State);
 
+        ////dbContext.SaveChanges();
+        //Console.WriteLine(dbContext.ChangeTracker.DebugView.LongView);
 
-
-
+        Order order1 = new Order()
+        {
+            CustomerId = 5
+        };
+        OrderItem orderItem1 = new OrderItem()
+        {
+            ProductId = 15,
+            OrderId = 4
+        };
+        OrderStatus orderStatus1 = new OrderStatus()
+        {
+            OrderId = 4,
+            StatusName = "inserting",
+            Color = "Blue",
+            Privacy = "Secret"
+        };
+        Console.WriteLine(new string('-', 45));
+        orderService.AddOrder(order1);
+        orderService.AddOrderItem(orderItem1);
+        orderService.AddOrderStatus(orderStatus1);
 
         Console.WriteLine("DONE!");
 

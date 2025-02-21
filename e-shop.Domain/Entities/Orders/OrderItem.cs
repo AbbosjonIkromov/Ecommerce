@@ -5,24 +5,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using e_shop.Domain.Entities.Products;
 
 namespace e_shop.Domain.Entities.Orders
 {
-    [Table("order_item")]
-    public class OrderItem
+    public class OrderItem : IAuditable
+
     {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
-        [Column("product_id")]
-        public int ProductId { get; set; }
-        [Column("order_id")]
-        public int OrderId { get; set; }
-        [Column("price")]
-        public decimal Price { get; set; }
-        [Column("quantity")]
-        public int Quantity { get; set; }
-        [Column("shippingId")]
-        public int ShippingId { get; set; }
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public virtual Product Product{ get; set; }
+    public int OrderId { get; set; }
+    public virtual Order Order { get; set; }
+    public decimal Price { get; set; }
+    public int Quantity { get; set; }
+    public int ShippingId { get; set; }
+    public virtual Shipping Shipping { get; set; }
+    public DateTime CreateAt { get; set; }
+    public DateTime? UpdateTime { get; set; }
+    public int CreatedBy { get; set; }
+    public int UpdatedBy { get; set; }
     }
 }

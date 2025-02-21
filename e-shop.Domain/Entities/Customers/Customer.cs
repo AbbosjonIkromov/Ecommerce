@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using e_shop.Domain.Entities.Orders;
 
 namespace e_shop.Domain.Entities.Customers
 {
@@ -14,6 +15,8 @@ namespace e_shop.Domain.Entities.Customers
         public Customer()
         {
             CustomerAddresses = new List<CustomerAddress>();
+            Orders = new List<Order>();
+
         }
 
         public int Id { get; set; }
@@ -25,6 +28,7 @@ namespace e_shop.Domain.Entities.Customers
         public bool Active { get; set; }
         public DateTime? RegisteredAt { get; set; }
         public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }   
 
         public DateTime CreateAt { get; set; }
         public DateTime? UpdateTime { get; set; }
