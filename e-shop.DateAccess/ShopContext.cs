@@ -32,7 +32,7 @@ namespace e_shop.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString)
-                .UseLazyLoadingProxies()
+                //.UseLazyLoadingProxies()
                 .LogTo(Console.WriteLine, new[] {RelationalEventId.CommandExecuted})
                 .UseSnakeCaseNamingConvention()
                 .AddInterceptors(new AuditInterceptor());

@@ -13,25 +13,25 @@ namespace e_shop.DateAccess.ModelConfigurition
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
-            builder.HasKey(r => r.Id);
-            builder.Property(r => r.Id)
-                .ValueGeneratedOnAdd();
+                builder.HasKey(r => r.Id);
+                builder.Property(r => r.Id)
+                    .ValueGeneratedOnAdd();
 
-            builder.Property(r => r.Price)
-                .HasPrecision(10, 2)
-                .HasDefaultValue(0.00m);
+                builder.Property(r => r.Price)
+                    .HasPrecision(10, 2)
+                    .HasDefaultValue(0.00m);
 
-            builder.Property(r => r.Quantity)
-                .HasColumnType("integer")
-                .HasDefaultValue("0");
+                builder.Property(r => r.Quantity)
+                    .HasColumnType("integer")
+                    .HasDefaultValue("0");
 
-            builder.Property(r => r.ShippingId)
-                .HasDefaultValue(1);
+                builder.Property(r => r.ShippingId)
+                    .HasDefaultValue(1);
 
-            builder.HasOne(r => r.Order)
-                .WithOne(r => r.OrderItem)
-                .HasForeignKey<OrderItem>(r => r.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                builder.HasOne(r => r.Order)
+                    .WithOne(r => r.OrderItem)
+                    .HasForeignKey<OrderItem>(r => r.OrderId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
         }
     }
