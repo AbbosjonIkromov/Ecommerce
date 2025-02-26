@@ -30,6 +30,11 @@ namespace e_shop.DateAccess.ModelConfigurition
                 .HasForeignKey(r => r.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(r => r.OrderStatus)
+                .WithMany(r => r.Orders)
+                .HasForeignKey(r => r.OrderStatusId)
+                .OnDelete(DeleteBehavior.SetNull);
+
         }
     }
 }

@@ -9,8 +9,8 @@ using e_shop.Domain.Entities.Orders;
 using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using ProductTag = e_shop.Domain.Entities.Products.ProductTag;
 
 namespace e_shop.DataAccess
 {
@@ -31,6 +31,11 @@ namespace e_shop.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //var config = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json")
+            //    .SetBasePath(Directory.GetCurrentDirectory())
+            //    .Build();
+
             optionsBuilder.UseNpgsql(_connectionString)
                 //.UseLazyLoadingProxies()
                 .LogTo(Console.WriteLine, new[] {RelationalEventId.CommandExecuted})
@@ -50,30 +55,11 @@ namespace e_shop.DataAccess
             //modelBuilder.ApplyConfiguration(new TagConfiguration());
 
 
-           // modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
+            // modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
 
-           // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Hamma IEntityConfiguration dan voris olgan larni ishlatadi
-            
+            // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Hamma IEntityConfiguration dan voris olgan larni ishlatadi
 
-            modelBuilder.Entity<CardItem>()
-                .HasOne(r => r.Card)
-                .WithMany(r => r.CardItems)
-                .HasForeignKey(r => r.CardId);
-
-
-            modelBuilder.Entity<ProductTag>(builder => 
-            {
-                builder.HasKey(r => new { r.ProductId, r.TagId });
-
-                builder.HasOne(r => r.Product)
-                    .WithMany(r => r.ProductTags);
-
-                builder.HasOne(r => r.Tag)
-                    .WithMany(r => r.ProductTags);
-
-
-            });
-
+            #region DataSeeding
             modelBuilder.Entity<Category>()
                 .HasData(
                     new Category
@@ -103,52 +89,44 @@ namespace e_shop.DataAccess
                         Published = true
                     }
                 );
-
-            //modelBuilder.Entity<ProductCategory>()
-            //    .HasData(
-            //        new ProductCategory
-            //        {
-            //            CategoryId = 1,
-            //            ProductId = 1
-            //        }
-            //    );
-
             
             modelBuilder.Seed();  // ModelBuilderExtensions class orqali malumoq qushish
+            #endregion    
 
-            
             #endregion
 
         }
 
-        public override int SaveChanges()
-        {
+        #region Interceptor
+        //public override int SaveChanges()
+        //{
 
-            var entries = ChangeTracker.Entries();
+        //    var entries = ChangeTracker.Entries();
 
-            var addedEntries = entries.Where(r => r.State == EntityState.Added);
+        //    var addedEntries = entries.Where(r => r.State == EntityState.Added);
 
-            var updateEntries = entries.Where(r => r.State == EntityState.Modified);
+        //    var updateEntries = entries.Where(r => r.State == EntityState.Modified);
 
-            foreach (var entry in addedEntries)
-            {
-                if (entry.Entity is IAuditable entity)
-                {
-                    entity.CreateAt = DateTime.UtcNow;
-                    entity.CreatedBy = 1;
-                }
-            }
+        //    foreach (var entry in addedEntries)
+        //    {
+        //        if (entry.Entity is IAuditable entity)
+        //        {
+        //            entity.CreateAt = DateTime.UtcNow;
+        //            entity.CreatedBy = 1;
+        //        }
+        //    }
 
-            foreach (var entry in updateEntries)
-            {
-                if (entry.Entity is IAuditable entity)
-                {
-                    entity.UpdateTime = DateTime.UtcNow;
-                    entity.UpdatedBy = 1;
-                }
-            }
+        //    foreach (var entry in updateEntries)
+        //    {
+        //        if (entry.Entity is IAuditable entity)
+        //        {
+        //            entity.UpdateTime = DateTime.UtcNow;
+        //            entity.UpdatedBy = 1;
+        //        }
+        //    }
 
-            return base.SaveChanges();
-        }
+        //    return base.SaveChanges();
+        //}
+        #endregion
     }
 }

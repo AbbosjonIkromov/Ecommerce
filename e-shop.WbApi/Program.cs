@@ -1,3 +1,5 @@
+using e_shop.DateAccess;
+
 namespace e_shop.WbApi
 {
     public class Program
@@ -10,7 +12,15 @@ namespace e_shop.WbApi
 
             builder.Services.AddControllers();
 
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
             // Configure the HTTP request pipeline.
 

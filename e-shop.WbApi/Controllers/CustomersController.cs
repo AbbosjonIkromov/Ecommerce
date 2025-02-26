@@ -16,8 +16,8 @@ public class CustomersController : ControllerBase
     [HttpGet("all-customers")]
     public async Task<IActionResult> GetAllCustomers()
     {
-        using var context = new ShopContext();
-        var customers =  context.Customers
+        await using var context = new ShopContext();
+        var customers =  await context.Customers
             .Select(r => new
             {
                 Id = r.Id,
@@ -25,7 +25,7 @@ public class CustomersController : ControllerBase
                 LastName = r.LastName,
                 PhoneNumber = r.PhoneNumber,
                 Password = Encoding.UTF8.GetString(Convert.FromBase64String(r.PasswordHash)),
-            }).ToList();
+            }).ToListAsync();
 
         return Ok(customers);
     }

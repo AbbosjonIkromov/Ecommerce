@@ -29,8 +29,8 @@ namespace e_shop.DateAccess.ModelConfigurition
                     .HasDefaultValue(1);
 
                 builder.HasOne(r => r.Order)
-                    .WithOne(r => r.OrderItem)
-                    .HasForeignKey<OrderItem>(r => r.OrderId)
+                    .WithMany(r => r.OrderItems)
+                    .HasForeignKey(r => r.OrderId)
                     .OnDelete(DeleteBehavior.Cascade);
 
         }

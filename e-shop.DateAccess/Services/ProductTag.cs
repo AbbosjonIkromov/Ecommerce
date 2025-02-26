@@ -32,9 +32,8 @@ namespace e_shop.DateAccess.Services
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            return  _shopContext.Products
-                .Include(r => r.ProductTags)
-                .ThenInclude(r => r.Tag);
+            return _shopContext.Products.ToList();
+
 
         }
     }

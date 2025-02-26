@@ -3,6 +3,7 @@ using e_shop.DataAccess;
 using e_shop.DateAccess.Services;
 using e_shop.Domain.Entities.Cards;
 using e_shop.Domain.Entities.Categories;
+using e_shop.Domain.Entities.Customers;
 using e_shop.Domain.Entities.Orders;
 using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        using var dbContext = new ShopContext();
+        await using var dbContext = new ShopContext();
         var productService = new ProductService(dbContext);
         var categoryService = new CategoryService(dbContext);
         var customerService = new CustomerService(dbContext);
@@ -222,26 +223,19 @@ class Program
         ////dbContext.SaveChanges();
         //Console.WriteLine(dbContext.ChangeTracker.DebugView.LongView);
 
-        Order order1 = new Order()
+        List<Order> orders = new List<Order>
         {
-            CustomerId = 5
+            new Order { Id = 1, CouponId = 1, CustomerId = 14, OrderStatusId = 1, OrderApprovedAt = DateTime.UtcNow.AddDays(-6) },
+            new Order { Id = 2, CouponId = 2, CustomerId = 15, OrderStatusId = 2, OrderApprovedAt = DateTime.UtcNow.AddDays(-5) },
+            new Order { Id = 3, CouponId = 3, CustomerId = 16, OrderStatusId = 3, OrderApprovedAt = DateTime.UtcNow.AddDays(-4) },
+            new Order { Id = 4, CouponId = 1, CustomerId = 17, OrderStatusId = 1, OrderApprovedAt = DateTime.UtcNow.AddDays(-3) },
+            new Order { Id = 5, CouponId = 2, CustomerId = 18, OrderStatusId = 2, OrderApprovedAt = DateTime.UtcNow.AddDays(-3) },
+            new Order { Id = 6, CouponId = 3, CustomerId = 19, OrderStatusId = 3, OrderApprovedAt = DateTime.UtcNow.AddDays(-2) },
+            new Order { Id = 7, CouponId = 1, CustomerId = 20, OrderStatusId = 1, OrderApprovedAt = DateTime.UtcNow.AddDays(-1) }
         };
-        OrderItem orderItem1 = new OrderItem()
-        {
-            ProductId = 15,
-            OrderId = 4
-        };
-        OrderStatus orderStatus1 = new OrderStatus()
-        {
-            OrderId = 4,
-            StatusName = "inserting",
-            Color = "Blue",
-            Privacy = "Secret"
-        };
-        Console.WriteLine(new string('-', 45));
-        orderService.AddOrder(order1);
-        orderService.AddOrderItem(orderItem1);
-        orderService.AddOrderStatus(orderStatus1);
+
+        dbContext.Orders.AddRange(orders);
+        dbContext.SaveChanges();
 
         Console.WriteLine("DONE!");
 

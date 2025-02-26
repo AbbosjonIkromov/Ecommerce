@@ -16,7 +16,6 @@ public class Product : IAuditable
     {
        // ProductCategories = new List<ProductCategory>();
        Categories = new List<Category>();
-        ProductTags = new List<ProductTag>();
     }
 
     public int ProductId { get; set; }
@@ -36,6 +35,5 @@ public class Product : IAuditable
 
    // public virtual ICollection<ProductCategory> ProductCategories { get; set; }
    public virtual ICollection<Category> Categories { get; set; }
-    public virtual ICollection<ProductTag> ProductTags { get; set; }
 
 }

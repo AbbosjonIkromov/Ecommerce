@@ -10,12 +10,18 @@ namespace e_shop.Domain.Entities.Orders
 {
     public class OrderStatus : IAuditable
     {
+        public OrderStatus()
+        {
+            Orders = new List<Order>();
+        }
         public int Id { get; set; }
         public string StatusName { get; set; }
         public string Color { get; set; }
         public string Privacy { get; set; }
         public int OrderId { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual List<Order> Orders { get; set; }
+
+        //IAuditable
         public DateTime CreateAt { get; set; }
         public DateTime? UpdateTime { get; set; }
         public int CreatedBy { get; set; }

@@ -24,10 +24,7 @@ namespace e_shop.DateAccess.ModelConfigurition
             builder.Property(r => r.Privacy)
                 .HasColumnType("varchar")
                 .HasMaxLength(100);
-            builder.HasOne(r => r.Order)
-                .WithOne(r => r.OrderStatus)
-                .HasForeignKey<OrderStatus>(r => r.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+           
 
         }
     }

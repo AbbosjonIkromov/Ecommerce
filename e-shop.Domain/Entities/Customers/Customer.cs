@@ -30,6 +30,7 @@ namespace e_shop.Domain.Entities.Customers
         public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
         public virtual ICollection<Order> Orders { get; set; }   
 
+        // IAuditable
         public DateTime CreateAt { get; set; }
         public DateTime? UpdateTime { get; set; }
         public int CreatedBy { get; set; }

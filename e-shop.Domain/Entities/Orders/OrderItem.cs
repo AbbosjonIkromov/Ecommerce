@@ -21,6 +21,8 @@ namespace e_shop.Domain.Entities.Orders
     public int Quantity { get; set; }
     public int ShippingId { get; set; }
     public virtual Shipping Shipping { get; set; }
+
+    // IAuditable
     public DateTime CreateAt { get; set; }
     public DateTime? UpdateTime { get; set; }
     public int CreatedBy { get; set; }

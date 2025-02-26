@@ -18,9 +18,6 @@ namespace e_shop.DateAccess.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.1")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -297,7 +294,9 @@ namespace e_shop.DateAccess.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Active")
-                        .HasColumnType("boolean")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bool")
+                        .HasDefaultValue(false)
                         .HasColumnName("active");
 
                     b.Property<DateTime>("CreateAt")
@@ -310,17 +309,20 @@ namespace e_shop.DateAccess.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
                         .HasColumnName("email");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
                         .HasColumnName("last_name");
 
                     b.Property<string>("PasswordHash")
@@ -330,12 +332,15 @@ namespace e_shop.DateAccess.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar")
                         .HasColumnName("phone_number");
 
                     b.Property<DateTime?>("RegisteredAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("registered_at");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasColumnName("registered_at")
+                        .HasDefaultValueSql("current_timestamp");
 
                     b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("timestamp with time zone")
@@ -362,21 +367,29 @@ namespace e_shop.DateAccess.Migrations
 
                     b.Property<string>("AddressLine1")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Tashkent")
                         .HasColumnName("address_line1");
 
                     b.Property<string>("AddressLine2")
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Kashkadarya")
                         .HasColumnName("address_line2");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Tashkent")
                         .HasColumnName("city");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Uzbekistan")
                         .HasColumnName("country");
 
                     b.Property<int>("CustomerId")
@@ -385,7 +398,8 @@ namespace e_shop.DateAccess.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar")
                         .HasColumnName("phone_number");
 
                     b.Property<string>("PostalCode")
@@ -439,10 +453,6 @@ namespace e_shop.DateAccess.Migrations
                         .HasColumnName("order_delivered_customer_date")
                         .HasDefaultValueSql("current_timestamp");
 
-                    b.Property<int>("OrderItemId")
-                        .HasColumnType("integer")
-                        .HasColumnName("order_item_id");
-
                     b.Property<int>("OrderStatusId")
                         .HasColumnType("integer")
                         .HasColumnName("order_status_id");
@@ -463,6 +473,9 @@ namespace e_shop.DateAccess.Migrations
 
                     b.HasIndex("CustomerId")
                         .HasDatabaseName("ix_orders_customer_id");
+
+                    b.HasIndex("OrderStatusId")
+                        .HasDatabaseName("ix_orders_order_status_id");
 
                     b.ToTable("orders", (string)null);
                 });
@@ -523,7 +536,6 @@ namespace e_shop.DateAccess.Migrations
                         .HasName("pk_order_items");
 
                     b.HasIndex("OrderId")
-                        .IsUnique()
                         .HasDatabaseName("ix_order_items_order_id");
 
                     b.HasIndex("ProductId")
@@ -583,10 +595,6 @@ namespace e_shop.DateAccess.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_order_statuses");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_order_statuses_order_id");
 
                     b.ToTable("order_statuses", (string)null);
                 });
@@ -698,25 +706,6 @@ namespace e_shop.DateAccess.Migrations
                             SKU = "bb",
                             UpdatedBy = 0
                         });
-                });
-
-            modelBuilder.Entity("e_shop.Domain.Entities.Products.ProductTag", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer")
-                        .HasColumnName("product_id");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tag_id");
-
-                    b.HasKey("ProductId", "TagId")
-                        .HasName("pk_product_tag");
-
-                    b.HasIndex("TagId")
-                        .HasDatabaseName("ix_product_tag_tag_id");
-
-                    b.ToTable("product_tag", (string)null);
                 });
 
             modelBuilder.Entity("e_shop.Domain.Entities.Shipping", b =>
@@ -861,14 +850,14 @@ namespace e_shop.DateAccess.Migrations
 
             modelBuilder.Entity("e_shop.Domain.Entities.Customers.CustomerAddress", b =>
                 {
-                    b.HasOne("e_shop.Domain.Entities.Customers.Customer", "Customers")
+                    b.HasOne("e_shop.Domain.Entities.Customers.Customer", "Customer")
                         .WithMany("CustomerAddresses")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_customer_address_customer_customer_id");
 
-                    b.Navigation("Customers");
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("e_shop.Domain.Entities.Orders.Order", b =>
@@ -887,16 +876,25 @@ namespace e_shop.DateAccess.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_orders_customer_customer_id");
 
+                    b.HasOne("e_shop.Domain.Entities.Orders.OrderStatus", "OrderStatus")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_order_statuses_order_status_id");
+
                     b.Navigation("Coupon");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("OrderStatus");
                 });
 
             modelBuilder.Entity("e_shop.Domain.Entities.Orders.OrderItem", b =>
                 {
                     b.HasOne("e_shop.Domain.Entities.Orders.Order", "Order")
-                        .WithOne("OrderItem")
-                        .HasForeignKey("e_shop.Domain.Entities.Orders.OrderItem", "OrderId")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_order_items_orders_order_id");
@@ -922,39 +920,6 @@ namespace e_shop.DateAccess.Migrations
                     b.Navigation("Shipping");
                 });
 
-            modelBuilder.Entity("e_shop.Domain.Entities.Orders.OrderStatus", b =>
-                {
-                    b.HasOne("e_shop.Domain.Entities.Orders.Order", "Order")
-                        .WithOne("OrderStatus")
-                        .HasForeignKey("e_shop.Domain.Entities.Orders.OrderStatus", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_order_statuses_orders_order_id");
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("e_shop.Domain.Entities.Products.ProductTag", b =>
-                {
-                    b.HasOne("e_shop.Domain.Entities.Products.Product", "Product")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_product_tag_product_product_id");
-
-                    b.HasOne("e_shop.Domain.Entities.Tag", "Tag")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_product_tag_tag_tag_id");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("e_shop.Domain.Entities.Cards.Card", b =>
                 {
                     b.Navigation("CardItems");
@@ -969,21 +934,12 @@ namespace e_shop.DateAccess.Migrations
 
             modelBuilder.Entity("e_shop.Domain.Entities.Orders.Order", b =>
                 {
-                    b.Navigation("OrderItem")
-                        .IsRequired();
-
-                    b.Navigation("OrderStatus")
-                        .IsRequired();
+                    b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("e_shop.Domain.Entities.Products.Product", b =>
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.OrderStatus", b =>
                 {
-                    b.Navigation("ProductTags");
-                });
-
-            modelBuilder.Entity("e_shop.Domain.Entities.Tag", b =>
-                {
-                    b.Navigation("ProductTags");
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

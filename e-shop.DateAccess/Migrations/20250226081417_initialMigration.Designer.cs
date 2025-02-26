@@ -12,8 +12,8 @@ using e_shop.DataAccess;
 namespace e_shop.DateAccess.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20250213130546_lazyLoading")]
-    partial class lazyLoading
+    [Migration("20250226081417_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +21,6 @@ namespace e_shop.DateAccess.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.1")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -56,9 +53,25 @@ namespace e_shop.DateAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CardId"));
 
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("create_at");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer")
                         .HasColumnName("customer_id");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("update_time");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
 
                     b.HasKey("CardId")
                         .HasName("pk_card");
@@ -82,6 +95,14 @@ namespace e_shop.DateAccess.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("card_id");
 
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("create_at");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("integer")
                         .HasColumnName("product_id");
@@ -89,6 +110,14 @@ namespace e_shop.DateAccess.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
                         .HasColumnName("quantity");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("update_time");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
 
                     b.HasKey("Id")
                         .HasName("pk_card_item");
@@ -128,11 +157,9 @@ namespace e_shop.DateAccess.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("category_name");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnName("create_at");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -152,11 +179,9 @@ namespace e_shop.DateAccess.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("parent_id");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnName("update_time");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("integer")
@@ -174,7 +199,7 @@ namespace e_shop.DateAccess.Migrations
                             Active = true,
                             CategoryDescription = "This is crazy",
                             CategoryName = "Books",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = 0,
                             Icon = "_bb",
                             ImagePath = "image",
@@ -187,13 +212,79 @@ namespace e_shop.DateAccess.Migrations
                             Active = true,
                             CategoryDescription = "This is crazy",
                             CategoryName = "Sports",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = 0,
                             Icon = "_dd",
                             ImagePath = "image",
                             ParentId = 1,
                             UpdatedBy = 0
                         });
+                });
+
+            modelBuilder.Entity("e_shop.Domain.Entities.Coupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("code");
+
+                    b.Property<string>("CouponDescription")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("coupon_description");
+
+                    b.Property<DateTime>("CouponEndDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("coupon_end_date");
+
+                    b.Property<DateTime>("CouponStartDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("coupon_start_date");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("DiscountType")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("discount_type");
+
+                    b.Property<decimal>("DiscountValue")
+                        .HasColumnType("numeric")
+                        .HasColumnName("discount_value");
+
+                    b.Property<int>("MaxUsage")
+                        .HasColumnType("integer")
+                        .HasColumnName("max_usage");
+
+                    b.Property<int>("TimesUsed")
+                        .HasColumnType("integer")
+                        .HasColumnName("time_used");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_coupon");
+
+                    b.ToTable("coupon", (string)null);
                 });
 
             modelBuilder.Entity("e_shop.Domain.Entities.Customers.Customer", b =>
@@ -206,26 +297,35 @@ namespace e_shop.DateAccess.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Active")
-                        .HasColumnType("boolean")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bool")
+                        .HasDefaultValue(false)
                         .HasColumnName("active");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnName("create_at");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
                         .HasColumnName("email");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar")
                         .HasColumnName("last_name");
 
                     b.Property<string>("PasswordHash")
@@ -235,12 +335,23 @@ namespace e_shop.DateAccess.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar")
                         .HasColumnName("phone_number");
 
                     b.Property<DateTime?>("RegisteredAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasColumnName("registered_at")
+                        .HasDefaultValueSql("current_timestamp");
+
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("registered_at");
+                        .HasColumnName("update_time");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
 
                     b.HasKey("Id")
                         .HasName("pk_customer");
@@ -259,21 +370,29 @@ namespace e_shop.DateAccess.Migrations
 
                     b.Property<string>("AddressLine1")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Tashkent")
                         .HasColumnName("address_line1");
 
                     b.Property<string>("AddressLine2")
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Kashkadarya")
                         .HasColumnName("address_line2");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Tashkent")
                         .HasColumnName("city");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar")
+                        .HasDefaultValue("Uzbekistan")
                         .HasColumnName("country");
 
                     b.Property<int>("CustomerId")
@@ -282,7 +401,8 @@ namespace e_shop.DateAccess.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar")
                         .HasColumnName("phone_number");
 
                     b.Property<string>("PostalCode")
@@ -299,6 +419,189 @@ namespace e_shop.DateAccess.Migrations
                     b.ToTable("customer_address", (string)null);
                 });
 
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CouponId")
+                        .HasColumnType("integer")
+                        .HasColumnName("coupon_id");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("create_at");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
+
+                    b.Property<DateTime>("OrderApprovedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasColumnName("order_approved_at")
+                        .HasDefaultValueSql("current_timestamp");
+
+                    b.Property<DateTime>("OrderDeliveredCustomerDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasColumnName("order_delivered_customer_date")
+                        .HasDefaultValueSql("current_timestamp");
+
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("integer")
+                        .HasColumnName("order_status_id");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("update_time");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_orders");
+
+                    b.HasIndex("CouponId")
+                        .HasDatabaseName("ix_orders_coupon_id");
+
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_orders_customer_id");
+
+                    b.HasIndex("OrderStatusId")
+                        .HasDatabaseName("ix_orders_order_status_id");
+
+                    b.ToTable("orders", (string)null);
+                });
+
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("create_at");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("order_id");
+
+                    b.Property<decimal>("Price")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)")
+                        .HasDefaultValue(0.00m)
+                        .HasColumnName("price");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer")
+                        .HasColumnName("product_id");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0)
+                        .HasColumnName("quantity");
+
+                    b.Property<int>("ShippingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1)
+                        .HasColumnName("shipping_id");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("update_time");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_order_items");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_order_items_order_id");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_order_items_product_id");
+
+                    b.HasIndex("ShippingId")
+                        .HasDatabaseName("ix_order_items_shipping_id");
+
+                    b.ToTable("order_items", (string)null);
+                });
+
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.OrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar")
+                        .HasColumnName("color");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("create_at");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("order_id");
+
+                    b.Property<string>("Privacy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar")
+                        .HasColumnName("privacy");
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status_name");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("update_time");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_order_statuses");
+
+                    b.ToTable("order_statuses", (string)null);
+                });
+
             modelBuilder.Entity("e_shop.Domain.Entities.Products.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -308,11 +611,9 @@ namespace e_shop.DateAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProductId"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnName("create_at");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -362,11 +663,9 @@ namespace e_shop.DateAccess.Migrations
                         .HasColumnType("varchar")
                         .HasColumnName("sku");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnName("update_time");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("integer")
@@ -381,7 +680,7 @@ namespace e_shop.DateAccess.Migrations
                         new
                         {
                             ProductId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = 0,
                             DiscountPrice = 37000m,
                             ProductDescription = "Awesome",
@@ -392,13 +691,12 @@ namespace e_shop.DateAccess.Migrations
                             Quantity = 13,
                             RegularPrice = 45000m,
                             SKU = "bb",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedBy = 0
                         },
                         new
                         {
                             ProductId = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = 0,
                             DiscountPrice = 70000m,
                             ProductDescription = "Awesome",
@@ -409,28 +707,53 @@ namespace e_shop.DateAccess.Migrations
                             Quantity = 13,
                             RegularPrice = 75000m,
                             SKU = "bb",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedBy = 0
                         });
                 });
 
-            modelBuilder.Entity("e_shop.Domain.Entities.Products.ProductTag", b =>
+            modelBuilder.Entity("e_shop.Domain.Entities.Shipping", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("product_id");
+                        .HasColumnName("id");
 
-                    b.Property<int>("TagId")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
-                        .HasColumnName("tag_id");
+                        .HasColumnName("created_by");
 
-                    b.HasKey("ProductId", "TagId")
-                        .HasName("pk_product_tag");
+                    b.Property<string>("IconPath")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("icon_path");
 
-                    b.HasIndex("TagId")
-                        .HasDatabaseName("ix_product_tag_tag_id");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
-                    b.ToTable("product_tag", (string)null);
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_shipping");
+
+                    b.ToTable("shipping", (string)null);
                 });
 
             modelBuilder.Entity("e_shop.Domain.Entities.Tag", b =>
@@ -530,35 +853,74 @@ namespace e_shop.DateAccess.Migrations
 
             modelBuilder.Entity("e_shop.Domain.Entities.Customers.CustomerAddress", b =>
                 {
-                    b.HasOne("e_shop.Domain.Entities.Customers.Customer", "Customers")
+                    b.HasOne("e_shop.Domain.Entities.Customers.Customer", "Customer")
                         .WithMany("CustomerAddresses")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_customer_address_customer_customer_id");
 
-                    b.Navigation("Customers");
+                    b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("e_shop.Domain.Entities.Products.ProductTag", b =>
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.Order", b =>
                 {
+                    b.HasOne("e_shop.Domain.Entities.Coupon", "Coupon")
+                        .WithMany()
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_coupon_coupon_id");
+
+                    b.HasOne("e_shop.Domain.Entities.Customers.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_customer_customer_id");
+
+                    b.HasOne("e_shop.Domain.Entities.Orders.OrderStatus", "OrderStatus")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_order_statuses_order_status_id");
+
+                    b.Navigation("Coupon");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("OrderStatus");
+                });
+
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.HasOne("e_shop.Domain.Entities.Orders.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_order_items_orders_order_id");
+
                     b.HasOne("e_shop.Domain.Entities.Products.Product", "Product")
-                        .WithMany("ProductTags")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_product_tag_product_product_id");
+                        .HasConstraintName("fk_order_items_product_product_id");
 
-                    b.HasOne("e_shop.Domain.Entities.Tag", "Tag")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("TagId")
+                    b.HasOne("e_shop.Domain.Entities.Shipping", "Shipping")
+                        .WithMany()
+                        .HasForeignKey("ShippingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_product_tag_tag_tag_id");
+                        .HasConstraintName("fk_order_items_shipping_shipping_id");
+
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
 
-                    b.Navigation("Tag");
+                    b.Navigation("Shipping");
                 });
 
             modelBuilder.Entity("e_shop.Domain.Entities.Cards.Card", b =>
@@ -569,16 +931,18 @@ namespace e_shop.DateAccess.Migrations
             modelBuilder.Entity("e_shop.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Navigation("CustomerAddresses");
+
+                    b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("e_shop.Domain.Entities.Products.Product", b =>
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.Order", b =>
                 {
-                    b.Navigation("ProductTags");
+                    b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("e_shop.Domain.Entities.Tag", b =>
+            modelBuilder.Entity("e_shop.Domain.Entities.Orders.OrderStatus", b =>
                 {
-                    b.Navigation("ProductTags");
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

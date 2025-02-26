@@ -15,7 +15,6 @@ namespace e_shop.Domain.Entities
     {
         public Tag()
         {
-            ProductTags = new List<ProductTag>();
 
         }
 
@@ -26,7 +25,6 @@ namespace e_shop.Domain.Entities
         public DateTime UpdatedAt { get; set; }
         public int  CreatedBy { get; set; }
         public int UpdatedBy { get; set; }
-        public virtual ICollection<ProductTag> ProductTags { get; set; }
 
     }
 }

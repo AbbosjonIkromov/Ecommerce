@@ -3,6 +3,7 @@ using e_shop.Domain.Entities.Products;
 using e_shop.WbApi.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace e_shop.WbApi.Controllers;
 
@@ -11,10 +12,10 @@ namespace e_shop.WbApi.Controllers;
 public class ProductController : ControllerBase
 {
     [HttpGet("all-products")]
-    public IActionResult GetAllProducts()
+    public async Task<IActionResult> GetAllProducts()
     {
-        using var context = new ShopContext();
-        var products = context.Products
+        await using var context = new ShopContext();
+        var products = await context.Products
             .Select(r => new
             {
                 Id = r.ProductId,
@@ -26,7 +27,7 @@ public class ProductController : ControllerBase
                 SKU = r.SKU,
                 Published = r.Published
 
-            }).ToList();
+            }).ToListAsync();
 
         return Ok(products);
     }

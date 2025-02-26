@@ -14,7 +14,7 @@ namespace e_shop.Domain.Entities.Customers
         public int Id { get; set; }
         public int CustomerId { get; set; }
         //[ForeignKey("CustomerId")]
-        public virtual Customer Customers { get; set; }
+        public virtual Customer Customer { get; set; }
         public string AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
         public string PostalCode { get; set; }
