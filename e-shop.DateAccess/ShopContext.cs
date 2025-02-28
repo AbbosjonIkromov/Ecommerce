@@ -29,6 +29,9 @@ namespace e_shop.DataAccess
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
 
+        public DbSet<LastMonthOrder> LastMonthOrders { get; set; }
+        public DbSet<OrderSummary> OrderSummaries { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //var config = new ConfigurationBuilder()
@@ -46,6 +49,14 @@ namespace e_shop.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly); // bu ham wunaqa iwlaydi
+
+            modelBuilder.Entity<LastMonthOrder>()
+                .ToView("last_month_orders")
+                .HasNoKey();
+
+            modelBuilder.Entity<OrderSummary>()
+                .HasNoKey()
+                .ToFunction("SP_GetOrders");
 
             #region Lesson
             //modelBuilder.ApplyConfiguration(new ProductConfiguration());

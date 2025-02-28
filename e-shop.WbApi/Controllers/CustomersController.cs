@@ -55,7 +55,7 @@ public class CustomersController : ControllerBase
         var customer = await context.Customers.FindAsync(id);
         if (customer is null)
         {
-            return NotFound();
+            return NotFound("Customer not found");
         }
 
         context.Customers.Remove(customer);

@@ -223,19 +223,11 @@ class Program
         ////dbContext.SaveChanges();
         //Console.WriteLine(dbContext.ChangeTracker.DebugView.LongView);
 
-        List<Order> orders = new List<Order>
+        var lastMonthOrders = dbContext.LastMonthOrders.ToList();
+        foreach (var lastMonthOrder in lastMonthOrders)
         {
-            new Order { Id = 1, CouponId = 1, CustomerId = 14, OrderStatusId = 1, OrderApprovedAt = DateTime.UtcNow.AddDays(-6) },
-            new Order { Id = 2, CouponId = 2, CustomerId = 15, OrderStatusId = 2, OrderApprovedAt = DateTime.UtcNow.AddDays(-5) },
-            new Order { Id = 3, CouponId = 3, CustomerId = 16, OrderStatusId = 3, OrderApprovedAt = DateTime.UtcNow.AddDays(-4) },
-            new Order { Id = 4, CouponId = 1, CustomerId = 17, OrderStatusId = 1, OrderApprovedAt = DateTime.UtcNow.AddDays(-3) },
-            new Order { Id = 5, CouponId = 2, CustomerId = 18, OrderStatusId = 2, OrderApprovedAt = DateTime.UtcNow.AddDays(-3) },
-            new Order { Id = 6, CouponId = 3, CustomerId = 19, OrderStatusId = 3, OrderApprovedAt = DateTime.UtcNow.AddDays(-2) },
-            new Order { Id = 7, CouponId = 1, CustomerId = 20, OrderStatusId = 1, OrderApprovedAt = DateTime.UtcNow.AddDays(-1) }
-        };
-
-        dbContext.Orders.AddRange(orders);
-        dbContext.SaveChanges();
+            Console.WriteLine($"Id: {lastMonthOrder.Id}, Date: {lastMonthOrder.OrderApprovedAt}");
+        }
 
         Console.WriteLine("DONE!");
 
