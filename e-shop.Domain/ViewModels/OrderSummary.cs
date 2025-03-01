@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_shop.Domain.Entities
+namespace e_shop.Domain.ViewModels
 {
     public class OrderSummary
     {

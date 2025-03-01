@@ -7,6 +7,7 @@ using e_shop.Domain.Entities.Categories;
 using e_shop.Domain.Entities.Customers;
 using e_shop.Domain.Entities.Orders;
 using e_shop.Domain.Entities.Products;
+using e_shop.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
