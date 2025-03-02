@@ -1,6 +1,8 @@
 ﻿using e_shop.DataAccess;
 using e_shop.Domain.Entities.Products;
-using e_shop.WbApi.Dtos;
+using e_shop.Application.Dtos;
+using e_shop.Application.Validation;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,12 +34,41 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
+    [HttpPost("create-product")]
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequesDto productDto)
+    {
+        var validator = new CreateProductRequestDtoValidator();
+        var validatorRequest = await validator.ValidateAsync(productDto);
+
+        if (!validatorRequest.IsValid)
+        {
+            return BadRequest(validatorRequest.Errors);
+        }
+
+        var product = new Product()
+        {
+            ProductName = productDto.ProductName,
+            ProductDescription = productDto.ProductDescription,
+            ProductWeight = productDto.ProductWeight,
+            SKU = productDto.SKU,
+            ProductNote = productDto.ProductNote,
+            Quantity = productDto.Quantity,
+            Published = productDto.Published,
+        };
+
+        await using var context = new ShopContext();
+        await context.Products.AddAsync(product);
+        await context.SaveChangesAsync();
+
+        return Ok(product);
+
+    }
+
     [HttpPost("add-product")]
-    public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
+    public async Task<IActionResult> AddProduct([FromBody] CreateProductRequesDto productDto)
     {
         var product = new Product()
         {
-            ProductId = productDto.Id,
             ProductName = productDto.ProductName,
             ProductDescription = productDto.ProductDescription,
             ProductWeight = productDto.ProductWeight,

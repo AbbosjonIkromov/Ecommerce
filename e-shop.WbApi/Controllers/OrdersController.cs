@@ -1,6 +1,8 @@
 ﻿using e_shop.DataAccess;
 using e_shop.Domain.Entities.Orders;
-using e_shop.WbApi.Dtos;
+using e_shop.Application.Dtos;
+using e_shop.Application.Validation;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +97,15 @@ namespace e_shop.WbApi.Controllers
             }
             context.Orders.Remove(order);
             await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("create-order")]
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequestDto orderDto)
+        {
+            var validator = new CreateOrderRequestDtoValidator();
+            
+            await validator.ValidateAndThrowAsync(orderDto);
             return Ok();
         }
     }

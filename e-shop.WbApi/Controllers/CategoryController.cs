@@ -1,6 +1,6 @@
 ﻿using e_shop.DataAccess;
 using e_shop.Domain.Entities.Categories;
-using e_shop.WbApi.Dtos;
+using e_shop.Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

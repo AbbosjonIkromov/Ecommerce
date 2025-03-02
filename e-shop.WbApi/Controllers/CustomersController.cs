@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using e_shop.DataAccess;
 using e_shop.Domain.Entities.Customers;
-using e_shop.WbApi.Dtos;
+using e_shop.Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +31,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost("add-customer")]
-    public async Task<IActionResult> AddCustomer([FromBody] CustomerDto customerDto)
+    public async Task<IActionResult> AddCustomer([FromBody] CreateCustomerRequestDto customerDto)
     {
         var customer = new Customer()
         {

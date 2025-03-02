@@ -1,6 +1,6 @@
 ﻿using e_shop.Domain.Entities.Orders;
 
-namespace e_shop.WbApi.Dtos
+namespace e_shop.Application.Dtos
 {
     public class OrderDto
     {

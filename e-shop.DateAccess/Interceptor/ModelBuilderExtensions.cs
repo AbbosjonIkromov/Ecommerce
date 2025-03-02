@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using e_shop.Domain.Entities.Categories;
+﻿using e_shop.Domain.Entities.Categories;
 using e_shop.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 
-namespace e_shop.DateAccess.Services
+namespace e_shop.Application.Services
 {
     public static class ModelBuilderExtensions
     {

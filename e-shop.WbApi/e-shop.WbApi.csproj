@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\e-shop.DateAccess\e-shop.DataAccess.csproj" />
+    <ProjectReference Include="..\e-shop.Application\e-shop.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,7 @@
 ﻿using e_shop.DataAccess;
 using e_shop.Domain.Entities.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace e_shop.DateAccess.Services;
+namespace e_shop.Application.Services;
 
 public class ProductService
 {

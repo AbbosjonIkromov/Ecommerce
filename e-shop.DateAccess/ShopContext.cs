@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
+using e_shop.Application.Services;
 using e_shop.DateAccess.ModelConfigurition;
-using e_shop.DateAccess.Services;
 using e_shop.Domain.Entities;
 using e_shop.Domain.Entities.Cards;
 using e_shop.Domain.Entities.Categories;
@@ -42,7 +42,7 @@ namespace e_shop.DataAccess
 
             optionsBuilder.UseNpgsql(_connectionString)
                 //.UseLazyLoadingProxies()
-                .LogTo(Console.WriteLine, new[] {RelationalEventId.CommandExecuted})
+                .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted })
                 .UseSnakeCaseNamingConvention()
                 .AddInterceptors(new AuditInterceptor());
         }
