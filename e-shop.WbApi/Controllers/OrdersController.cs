@@ -1,6 +1,7 @@
 ﻿using e_shop.DataAccess;
 using e_shop.Domain.Entities.Orders;
 using e_shop.Application.Dtos;
+using e_shop.Application.Services;
 using e_shop.Application.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +14,17 @@ namespace e_shop.WbApi.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
+        private readonly ShopContext context;
+        private readonly OrderService _orderService;
+
+        public OrdersController(ShopContext context, OrderService orderService)
+        {
+            this.context = context;
+            _orderService = orderService;
+        }
         [HttpGet("all-orders")]
         public async Task<IActionResult> GetAllOrders()
         {
-            await using var context = new ShopContext();
             var orders = await context.Orders
                 .Select(r => new
                 {
@@ -32,7 +40,6 @@ namespace e_shop.WbApi.Controllers
         [HttpGet("get-last-month")]
         public async Task<IActionResult> GetLastMonthOrders()
         {
-            await using var context = new ShopContext();
             var lastMonthOrders = await context.LastMonthOrders
                 .Select(r => new
                 {
@@ -48,7 +55,6 @@ namespace e_shop.WbApi.Controllers
         [HttpGet("get-by-date-range")]
         public async Task<IActionResult> GetOrdersByDateRange([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
         {
-            await using var context = new ShopContext();
 
             fromDate = DateTime.SpecifyKind(fromDate, DateTimeKind.Utc);
             toDate = DateTime.SpecifyKind(toDate, DateTimeKind.Utc);
@@ -63,10 +69,22 @@ namespace e_shop.WbApi.Controllers
 
         }
 
+        [HttpGet("orders/{customerId:int}")]
+        public async Task<IActionResult> GetOrdersByCustomerId([FromRoute] int customerId)
+        {
+            var customer = await _orderService.GetCustomerById(customerId);
+
+            if (customer is null)
+            {
+                return NotFound("Customer not found");
+            }
+
+            return Ok(customer);
+        }
+
         [HttpPost("add-order/{id}")]
         public async Task<IActionResult> AddOrder([FromRoute] int id, [FromBody] OrderDto orderDto)
         {
-            await using var context = new ShopContext();
             var customer = await context.Customers.FindAsync(id);
             if (customer is null)
             {
@@ -89,7 +107,6 @@ namespace e_shop.WbApi.Controllers
         [HttpDelete("delete-order{orderId}")]
         public async Task<IActionResult> DeleteOrder([FromRoute] int orderId)
         {
-            await using var context = new ShopContext();
             var order = await context.Orders.FindAsync(orderId);
             if (order is null)
             {

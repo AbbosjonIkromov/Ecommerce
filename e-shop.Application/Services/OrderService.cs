@@ -1,16 +1,32 @@
 ﻿using e_shop.DataAccess;
+using e_shop.Domain.Entities.Customers;
 using e_shop.Domain.Entities.Orders;
 using Microsoft.EntityFrameworkCore;
 
 namespace e_shop.Application.Services
 {
-    public class OrderService
+    public interface IOrderService
+    {
+        void AddOrder(Order order);
+        
+    }
+    public class OrderService 
     {
         private readonly ShopContext _context;
 
         public OrderService(ShopContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<Order>> GetCustomerById(int customerId)
+        {
+            var customerOrders = await _context.Orders
+                .Where(r => r.CustomerId == customerId)
+                .ToListAsync();
+
+            return customerOrders;
+
         }
 
         public async Task<List<Order>> GetAll()

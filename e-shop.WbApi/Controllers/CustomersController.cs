@@ -12,11 +12,16 @@ namespace e_shop.WbApi.Controllers;
 [ApiController]
 public class CustomersController : ControllerBase
 {
+    private readonly ShopContext context;
+
+    public CustomersController(ShopContext context)
+    {
+        this.context = context;
+    }
 
     [HttpGet("all-customers")]
     public async Task<IActionResult> GetAllCustomers()
     {
-        await using var context = new ShopContext();
         var customers =  await context.Customers
             .Select(r => new
             {
@@ -42,7 +47,6 @@ public class CustomersController : ControllerBase
             Active = true
         };
 
-        await using var context = new ShopContext();
         await context.Customers.AddAsync(customer);
         await context.SaveChangesAsync();
         return Ok(customer);
@@ -51,7 +55,6 @@ public class CustomersController : ControllerBase
     [HttpDelete("remove-customer")]
     public async Task<IActionResult> DeleteCustomer([FromQuery] int id)
     {
-        await using var context = new ShopContext();
         var customer = await context.Customers.FindAsync(id);
         if (customer is null)
         {

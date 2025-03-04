@@ -11,10 +11,15 @@ namespace e_shop.WbApi.Controllers;
 [ApiController]
 public class CategoryController : ControllerBase
 {
+    private readonly ShopContext context;
+
+    public CategoryController(ShopContext context)
+    {
+        this.context = context;
+    }
     [HttpGet("all-categories")]
     public async Task<IActionResult> GetAllCategories()
     {
-        await using var context = new ShopContext();
         var categories = await context.Categories
             .Select(r => new
             {
@@ -42,7 +47,6 @@ public class CategoryController : ControllerBase
             Active = categoryDto.Active,
         };
 
-        await using var context = new ShopContext();
         await context.Categories.AddAsync(category);
         await context.SaveChangesAsync();
         return Ok(category);
@@ -51,7 +55,6 @@ public class CategoryController : ControllerBase
     [HttpDelete("delete-category")]
     public async Task<IActionResult> DeleteCategory([FromQuery] int id)
     {
-        await using var context = new ShopContext();
         var category = await context.Categories.FindAsync(id);
         if (category is null)
         {

@@ -4,6 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace e_shop.Application.Services
 {
+    public interface ICustomerService
+    {
+        Task AddCustomer(Customer customer);
+        Task AddCustomerAddress(CustomerAddress customerAddress);
+        IEnumerable<Customer> GetCustomers();
+        int SaveChanges();
+    }
     public class CustomerService
     {
         private readonly ShopContext _context;

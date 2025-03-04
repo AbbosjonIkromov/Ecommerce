@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\e-shop.Application\e-shop.Application.csproj" />
     <ProjectReference Include="..\e-shop.DateAccess\e-shop.DataAccess.csproj" />
   </ItemGroup>
 

@@ -1,3 +1,4 @@
+using e_shop.Application.Services;
 using e_shop.DataAccess;
 using e_shop.DateAccess;
 using e_shop.Domain.Entities;
@@ -15,17 +16,18 @@ namespace e_shop.WbApi
             // Add services to the container.
 
             builder.Services.AddControllers();
+            
+            builder.Services.AddScoped<OrderService>();
 
+            builder.Services.AddDbContext<ShopContext>(builder =>
+            {
+                var conntectionString = "Host=localhost;Port=5432;Database=e_shopDb; User Id=postgres;Password=postgresql;";
 
-            //builder.Services.AddDbContext<ShopContext>(builder =>
-            //{
-            //    var conntectionString = "Host=localhost;Port=5432;Database=e_shopDb; User Id=postgres;Password=postgresql;";
-
-            //    builder.UseNpgsql(conntectionString)
-            //        .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted })
-            //        .UseSnakeCaseNamingConvention()
-            //        .AddInterceptors(new AuditInterceptor());
-            //});
+                builder.UseNpgsql(conntectionString)
+                    .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted })
+                    .UseSnakeCaseNamingConvention()
+                    .AddInterceptors(new AuditInterceptor());
+            });
 
             builder.Services.AddSwaggerGen(); // swagger yoqish uchun
 

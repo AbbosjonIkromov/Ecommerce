@@ -10,6 +10,7 @@ using e_shop.Domain.Entities.Products;
 using e_shop.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -17,7 +18,12 @@ namespace e_shop.DataAccess
 {
     public class ShopContext : DbContext
     {
-        private readonly string _connectionString = "Host=localhost;Port=5432;Database=e_shopDb; User Id=postgres;Password=postgresql;";
+        public ShopContext(DbContextOptions options) : base(options)
+        {
+            
+        }
+
+        //private readonly string _connectionString = "Host=localhost;Port=5432;Database=e_shopDb; User Id=postgres;Password=postgresql;";
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -33,20 +39,20 @@ namespace e_shop.DataAccess
         public DbSet<LastMonthOrder> LastMonthOrders { get; set; }
         public DbSet<OrderSummary> OrderSummaries { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //var config = new ConfigurationBuilder()
-            //    .AddJsonFile("appsettings.json")
-            //    .SetBasePath(Directory.GetCurrentDirectory())
-            //    .Build();
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //var config = new ConfigurationBuilder()
+        //    //    .AddJsonFile("appsettings.json")
+        //    //    .SetBasePath(Directory.GetCurrentDirectory())
+        //    //    .Build();
 
-            optionsBuilder.UseNpgsql(_connectionString)
-                //.UseLazyLoadingProxies()
-                .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted })
-                .UseSnakeCaseNamingConvention()
-                .AddInterceptors(new AuditInterceptor());
-        }
-
+        //    optionsBuilder.UseNpgsql(_connectionString)
+        //        //.UseLazyLoadingProxies()
+        //        .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted })
+        //        .UseSnakeCaseNamingConvention()
+        //        .AddInterceptors(new AuditInterceptor());
+        //}
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly); // bu ham wunaqa iwlaydi

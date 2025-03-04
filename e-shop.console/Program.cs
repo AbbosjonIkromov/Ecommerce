@@ -1,6 +1,6 @@
 ﻿using Bogus;
+using e_shop.Application.Services;
 using e_shop.DataAccess;
-using e_shop.DateAccess.Services;
 using e_shop.Domain.Entities.Cards;
 using e_shop.Domain.Entities.Categories;
 using e_shop.Domain.Entities.Customers;
@@ -13,12 +13,11 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        await using var dbContext = new ShopContext();
-        var productService = new ProductService(dbContext);
-        var categoryService = new CategoryService(dbContext);
-        var customerService = new CustomerService(dbContext);
-        var cardService = new CardService(dbContext);
-        var orderService = new OrderService(dbContext);
+        //var productService = new ProductService(dbContext);
+        //var categoryService = new CategoryService(dbContext);
+        //var customerService = new CustomerService(dbContext);
+        //var cardService = new CardService(dbContext);
+        //var orderService = new OrderService(dbContext);
 
         #region Practice
         //var product1 = new Product
@@ -223,11 +222,11 @@ class Program
         ////dbContext.SaveChanges();
         //Console.WriteLine(dbContext.ChangeTracker.DebugView.LongView);
 
-        var lastMonthOrders = dbContext.LastMonthOrders.ToList();
-        foreach (var lastMonthOrder in lastMonthOrders)
-        {
-            Console.WriteLine($"Id: {lastMonthOrder.Id}, Date: {lastMonthOrder.OrderApprovedAt}");
-        }
+        //var lastMonthOrders = dbContext.LastMonthOrders.ToList();
+        //foreach (var lastMonthOrder in lastMonthOrders)
+        //{
+        //    Console.WriteLine($"Id: {lastMonthOrder.Id}, Date: {lastMonthOrder.OrderApprovedAt}");
+        //}
 
         Console.WriteLine("DONE!");
 
